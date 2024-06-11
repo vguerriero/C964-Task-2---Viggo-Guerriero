@@ -1,9 +1,7 @@
-numpy
-pandas
-matplotlib
-seaborn
-scikit-learn
-plotly
-ipywidgets
 flask
 joblib
+numpy
+pandas
+scikit-learn
+seaborn
+xgboost
