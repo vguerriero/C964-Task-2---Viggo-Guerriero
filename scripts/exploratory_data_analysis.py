@@ -3,7 +3,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 # Load the cleaned data
-df = pd.read_csv('../data/cleaned/cleaned_data.csv')
+df = pd.read_csv('data/cleaned/cleaned_data.csv')
 
 # Display the first few rows
 print(df.head())
