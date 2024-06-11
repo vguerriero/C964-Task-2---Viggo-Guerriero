@@ -8,8 +8,8 @@ import joblib
 df = pd.read_csv('../data/cleaned/engineered_data.csv')
 
 # Define features and target
-X = df[['TotalSF', 'GrLivArea']]
-y = df['SalePrice']
+X = df[['TotalSF', 'sqft_living']]
+y = df['price']
 
 # Split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
