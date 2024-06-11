@@ -17,3 +17,4 @@ def predict():
     features = np.array([data['features']])
     prediction = model.predict(features)
     return jsonify({'prediction': prediction[0]})
+ 
