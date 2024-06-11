@@ -1,8 +1,8 @@
 import logging
 from logging.handlers import RotatingFileHandler
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
-from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
+from flask_security import Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required, hash_password
 
 app = Flask(__name__)
 app.config['DEBUG'] = True
@@ -27,6 +27,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(255))
     active = db.Column(db.Boolean())
     confirmed_at = db.Column(db.DateTime())
+    fs_uniquifier = db.Column(db.String(64), unique=True, nullable=False)
     roles = db.relationship('Role', secondary=roles_users,
                             backref=db.backref('users', lazy='dynamic'))
 
@@ -38,12 +39,16 @@ handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
 handler.setLevel(logging.INFO)
 app.logger.addHandler(handler)
 
+def initialize_database():
+    with app.app_context():
+        db.create_all()
+        if not user_datastore.find_user(email='admin@example.com'):
+            user_datastore.create_user(email='admin@example.com', password=hash_password('password'))
+        db.session.commit()
+
 @app.before_first_request
-def create_user():
-    db.create_all()
-    if not user_datastore.find_user(email='admin@example.com'):
-        user_datastore.create_user(email='admin@example.com', password='password')
-    db.session.commit()
+def create_admin_user():
+    initialize_database()
 
 @app.route('/')
 @login_required
@@ -51,5 +56,16 @@ def home():
     app.logger.info('Home page accessed')
     return render_template('index.html')
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        email = request.form['email']
+        password = hash_password(request.form['password'])
+        user_datastore.create_user(email=email, password=password)
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template('register.html')
+
 if __name__ == '__main__':
+    initialize_database()
     app.run()
