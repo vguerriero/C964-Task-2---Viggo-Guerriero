@@ -14,7 +14,6 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json()
-    features = np.array([data['features']])
+    features = np.array([data['price_per_sqft', 'house_size', 'bed', 'bath', 'acre_lot']])
     prediction = model.predict(features)
     return jsonify({'prediction': prediction[0]})
-
