@@ -1,11 +1,11 @@
 import pandas as pd
 
-def clean_data(input_path, output_path):
-    df = pd.read_csv(input_path)
-    df = df.dropna()
-    df = df.drop_duplicates()
-    df.to_csv(output_path, index=False)
+# Load the raw data
+df = pd.read_csv('../data/raw/house_prices.csv')
 
-if __name__ == "__main__":
-    clean_data('data/raw/house_prices.csv', 'data/cleaned/cleaned_data.csv')
+# Data cleaning steps
+df = df.drop(columns=['Alley', 'PoolQC', 'Fence', 'MiscFeature'])  # Drop columns with many missing values
+df = df.dropna()  # Drop rows with missing values
 
+# Save the cleaned data
+df.to_csv('../data/cleaned/cleaned_data.csv', index=False)
