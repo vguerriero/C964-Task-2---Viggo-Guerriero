@@ -1,12 +1,7 @@
 import pandas as pd
-import os
-
-# Use absolute path
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-csv_path = os.path.join(base_dir, 'data/raw/data_house.csv')
 
 # Load the raw data
-df = pd.read_csv(csv_path)
+df = pd.read_csv('../data/raw/data_house.csv')
 
 # Select necessary columns for analysis
 columns = [
@@ -16,9 +11,8 @@ columns = [
 ]
 df = df[columns]
 
-# Data cleaning steps (if any)
+# Data cleaning steps
 df = df.dropna()  # Drop rows with missing values
 
 # Save the cleaned data
-cleaned_csv_path = os.path.join(base_dir, 'data/cleaned/cleaned_data.csv')
-df.to_csv(cleaned_csv_path, index=False)
+df.to_csv('../data/cleaned/cleaned_data.csv', index=False)
