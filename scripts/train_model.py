@@ -1,40 +1,27 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
-from sklearn.tree import DecisionTreeRegressor
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.metrics import mean_absolute_error, mean_squared_error
+from sklearn.metrics import mean_squared_error
 import joblib
 
-# Load dataset with features
-df = pd.read_csv('../data/cleaned/cleaned_data_with_features.csv')
+# Load the engineered data
+df = pd.read_csv('../data/cleaned/engineered_data.csv')
 
-X = df.drop('price', axis=1)
-y = df['price']
+# Define features and target
+X = df[['TotalSF', 'GrLivArea']]
+y = df['SalePrice']
 
+# Split the data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Linear Regression
-lr = LinearRegression()
-lr.fit(X_train, y_train)
-y_pred_lr = lr.predict(X_test)
-print('Linear Regression MAE:', mean_absolute_error(y_test, y_pred_lr))
-print('Linear Regression RMSE:', mean_squared_error(y_test, y_pred_lr, squared=False))
+# Train the model
+model = LinearRegression()
+model.fit(X_train, y_train)
 
-# Decision Tree
-dt = DecisionTreeRegressor()
-dt.fit(X_train, y_train)
-y_pred_dt = dt.predict(X_test)
-print('Decision Tree MAE:', mean_absolute_error(y_test, y_pred_dt))
-print('Decision Tree RMSE:', mean_squared_error(y_test, y_pred_dt, squared=False))
+# Evaluate the model
+y_pred = model.predict(X_test)
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
 
-# Random Forest
-rf = RandomForestRegressor()
-rf.fit(X_train, y_train)
-y_pred_rf = rf.predict(X_test)
-print('Random Forest MAE:', mean_absolute_error(y_test, y_pred_rf))
-print('Random Forest RMSE:', mean_squared_error(y_test, y_pred_rf, squared=False))
-
-# Save the best model
-joblib.dump(rf, '../models/house_price_model.pkl')
-
+# Save the model
+joblib.dump(model, '../models/house_price_model.pkl')
