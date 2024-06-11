@@ -1,11 +1,14 @@
 import pandas as pd
 
 # Load the raw data
-df = pd.read_csv('../data/raw/house_prices.csv')
+df = pd.read_csv('../data/raw/usa_real_estate_dataset.csv')
+
+# Select necessary columns
+df = df[['price', 'bed', 'bath', 'acre_lot', 'house_size']]
 
 # Data cleaning steps
-df = df.drop(columns=['Alley', 'PoolQC', 'Fence', 'MiscFeature'])  # Drop columns with many missing values
 df = df.dropna()  # Drop rows with missing values
+df = df.drop_duplicates()  # Drop duplicate rows
 
 # Save the cleaned data
 df.to_csv('../data/cleaned/cleaned_data.csv', index=False)
