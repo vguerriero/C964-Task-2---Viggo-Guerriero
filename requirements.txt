@@ -8,3 +8,4 @@ pandas
 scikit-learn
 seaborn
 xgboost
+bcrypt==3.2.0
