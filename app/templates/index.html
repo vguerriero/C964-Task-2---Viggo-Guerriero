@@ -8,40 +8,21 @@
 <body>
     <h1>House Price Prediction</h1>
     <form id="prediction-form">
-        <label for="price_per_sqft">Price Per Square Foot:</label>
-        <input type="number" id="price_per_sqft" name="price_per_sqft"><br>
-        <label for="house_size">House Size:</label>
-        <input type="number" id="house_size" name="house_size"><br>
-        <label for="bed">Bedrooms:</label>
-        <input type="number" id="bed" name="bed"><br>
-        <label for="bath">Bathrooms:</label>
-        <input type="number" id="bath" name="bath"><br>
-        <label for="acre_lot">Acre Lot:</label>
-        <input type="number" id="acre_lot" name="acre_lot"><br>
+        <label for="features">Enter features (comma-separated: TotalSF, sqft_living):</label>
+        <input type="text" id="features" name="features">
         <button type="button" onclick="predict()">Predict</button>
     </form>
     <p id="prediction"></p>
 
     <script>
         async function predict() {
-            const price_per_sqft = document.getElementById('price_per_sqft').value;
-            const house_size = document.getElementById('house_size').value;
-            const bed = document.getElementById('bed').value;
-            const bath = document.getElementById('bath').value;
-            const acre_lot = document.getElementById('acre_lot').value;
-
+            const features = document.getElementById('features').value.split(',').map(Number);
             const response = await fetch('/predict', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ 
-                    price_per_sqft: parseFloat(price_per_sqft),
-                    house_size: parseFloat(house_size),
-                    bed: parseInt(bed),
-                    bath: parseInt(bath),
-                    acre_lot: parseFloat(acre_lot)
-                })
+                body: JSON.stringify({ features: features })
             });
             const data = await response.json();
             document.getElementById('prediction').textContent = 'Predicted Price: ' + data.prediction;
