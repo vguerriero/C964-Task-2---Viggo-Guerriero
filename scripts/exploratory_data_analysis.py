@@ -23,4 +23,3 @@ plt.show()
 # Scatter plot of some features vs SalePrice
 sns.scatterplot(data=df, x='sqft_living', y='price')
 plt.show()
-
