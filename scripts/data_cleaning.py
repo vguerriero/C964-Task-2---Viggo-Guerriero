@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Load the raw data
-df = pd.read_csv('../data/raw/data_house.csv')
+df = pd.read_csv('data/raw/data_house.csv')
 
 # Select necessary columns for analysis
 columns = [
@@ -15,4 +15,4 @@ df = df[columns]
 df = df.dropna()  # Drop rows with missing values
 
 # Save the cleaned data
-df.to_csv('../data/cleaned/cleaned_data.csv', index=False)
+df.to_csv('data/cleaned/cleaned_data.csv', index=False)
