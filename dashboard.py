@@ -82,3 +82,4 @@ def predict(n_clicks, total_sf, sqft_living, bedrooms, bathrooms, floors, sqft_a
 
 if __name__ == '__main__':
     app.run_server(debug=True)
+ 
