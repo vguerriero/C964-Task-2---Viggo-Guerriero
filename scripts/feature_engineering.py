@@ -12,5 +12,5 @@ scaler = StandardScaler()
 numerical_features = ['TotalSF', 'sqft_living']
 df[numerical_features] = scaler.fit_transform(df[numerical_features])
 
-# Save the engineered data
+# Save the modified dataset
 df.to_csv('../data/cleaned/engineered_data.csv', index=False)
