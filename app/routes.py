@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 # Load the trained model
-model = joblib.load('models/house_price_model.pkl')
+model = joblib.load('models/house_price_xgb_model.pkl')
 
 @app.route('/')
 @app.route('/index')
@@ -18,4 +18,5 @@ def predict():
     feature_names = ['TotalSF', 'sqft_living', 'bedrooms', 'bathrooms', 'floors', 'sqft_above', 'sqft_lot']
     features = pd.DataFrame([data['features']], columns=feature_names)
     prediction = model.predict(features)
-    return jsonify({'prediction': prediction[0]})
+    prediction = float(prediction[0])  # Convert to float
+    return jsonify({'prediction': prediction})
