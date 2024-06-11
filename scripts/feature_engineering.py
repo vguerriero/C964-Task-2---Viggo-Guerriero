@@ -9,7 +9,7 @@ df['TotalSF'] = df['sqft_living'] + df['sqft_basement']
 
 # Standardize features
 scaler = StandardScaler()
-numerical_features = ['TotalSF', 'sqft_living']
+numerical_features = ['TotalSF', 'sqft_living', 'bedrooms', 'bathrooms', 'floors', 'sqft_above', 'sqft_lot']
 df[numerical_features] = scaler.fit_transform(df[numerical_features])
 
 # Save the modified dataset
