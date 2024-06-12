@@ -8,7 +8,8 @@ import joblib
 df = pd.read_csv('data/cleaned/engineered_data.csv')
 
 # Define features and target
-X = df[['bedrooms', 'bathrooms', 'sqft_living', 'sqft_lot', 'floors']]
+features = ['sqft_living', 'bedrooms', 'bathrooms', 'floors', 'sqft_lot']
+X = df[features]
 y = df['price']
 
 # Split the data
