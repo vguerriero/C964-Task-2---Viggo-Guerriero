@@ -18,7 +18,8 @@ df = pd.read_csv('data/cleaned/engineered_data.csv')
 app = dash.Dash(__name__)
 
 # Set up logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(filename='dashboard.log', level=logging.DEBUG, 
+                    format='%(asctime)s %(levelname)s: %(message)s')
 
 # Layout of the dashboard
 app.layout = html.Div([
@@ -53,6 +54,7 @@ input_entries = []
 )
 def update_scatter_plot(sqft_living):
     fig = px.scatter(df, x='sqft_living', y='price', trendline="ols", title="Price vs. Sqft Living")
+    logging.info(f"Scatter plot updated for Sqft Living: {sqft_living}")
     return fig
 
 # Callback to update feature importance plot
@@ -65,6 +67,7 @@ def update_feature_importance(sqft_living):
     feature_names = ['sqft_living', 'bedrooms', 'bathrooms', 'floors', 'sqft_lot']
     feature_importance_df = pd.DataFrame({'Feature': feature_names, 'Importance': importance})
     fig = px.bar(feature_importance_df, x='Feature', y='Importance', title='Feature Importance')
+    logging.info(f"Feature importance plot updated for Sqft Living: {sqft_living}")
     return fig
 
 # Callback to add input entries
@@ -81,6 +84,7 @@ def add_entry(n_clicks, bedrooms, bathrooms, sqft_living, sqft_lot, floors):
     if n_clicks > 0:
         entry = {'bedrooms': bedrooms, 'bathrooms': bathrooms, 'sqft_living': sqft_living, 'sqft_lot': sqft_lot, 'floors': floors}
         input_entries.append(entry)
+        logging.info(f"New entry added: {entry}")
         return html.Ul([html.Li(f"Bedrooms: {e['bedrooms']}, Bathrooms: {e['bathrooms']}, Sqft Living: {e['sqft_living']}, Sqft Lot: {e['sqft_lot']}, Floors: {e['floors']}") for e in input_entries])
     return ''
 
@@ -103,6 +107,7 @@ def predict(n_clicks):
         logging.debug(f"Predictions: {predictions}")
 
         results = [f'Predicted House Price: ${p:,.2f}' for p in predictions]
+        logging.info(f"Predictions made: {results}")
         return html.Ul([html.Li(result) for result in results])
     return ''
 
